@@ -20,14 +20,13 @@ Future<void> initializeApp() async {
 Future<void> loadConfig() async {
   try {
     String _configContent = await rootBundle.loadString('assets/config/main.json');
-    Map<String, dynamic> _configData = jsonDecode(_configContent);
+    Map _configData = jsonDecode(_configContent);
 
     if (_configData.containsKey("COIN_API_BASE_URL") && _configData["COIN_API_BASE_URL"] != null) {
       GetIt.instance.registerSingleton<AppConfig>(
         AppConfig(COIN_API_BASE_URL: _configData["COIN_API_BASE_URL"])
       );
       registerHTTPService(); // Register HTTPService after AppConfig is registered
-      await GetIt.instance.get<HTTPService>().get("coins/bitcoin");
     } else {
       throw Exception('COIN_API_BASE_URL not found or is null');
     }
