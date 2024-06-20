@@ -134,7 +134,7 @@ class _homePage extends State<HomePage>{
     return Container(
       width: _deviceWidth * 0.85,
       height: _deviceHeight * 0.3,
-      child: Text(_descrip,style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400)),
+      child: SingleChildScrollView(child: Text(_descrip,style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400))),
     );
   }
 
