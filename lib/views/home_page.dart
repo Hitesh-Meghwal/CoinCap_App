@@ -27,13 +27,22 @@ class _homePage extends State<HomePage>{
     _http = GetIt.instance.get<HTTPService>();
   }
 
+
+  final Map<String, String> _coinMap = {
+    'BITCOIN': 'bitcoin',
+    'ETHEREUM': 'ethereum',
+    'TETHER': 'tether',
+    'CARDANO': 'cardano',
+    'RIPPLE': 'ripple'
+  };
+
   @override
   Widget build(BuildContext context) {
     _deviceWidth = MediaQuery.of(context).size.width;
     _deviceHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.purple[400],
+        backgroundColor: Color.fromARGB(255, 30, 150, 230),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -51,15 +60,14 @@ class _homePage extends State<HomePage>{
 
   Widget _selectedCoinDropdown(){
   
-    List<String> _coins = ['bitcoin','ethereum','tether','cardano','ripple'];
-    List<DropdownMenuItem<String>> _item = _coins.map((e)=>DropdownMenuItem(value: e, child: Text(e,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600, fontSize: 30)))).toList();
+    List<DropdownMenuItem<String>> _item = _coinMap.keys.map((e)=>DropdownMenuItem(value: e, child: Text(e,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600, fontSize: 30)))).toList();
     return DropdownButton(
-      value: _selectedCoin,
+      value: _selectedCoin!.toUpperCase(),
       items: _item,           
       dropdownColor: Colors.purple[700],                                                                            
       onChanged: (dynamic _value) {
         setState(() {
-          _selectedCoin = _value;
+          _selectedCoin = _coinMap[_value];
         });
       },
       
@@ -83,6 +91,7 @@ class _homePage extends State<HomePage>{
           );
         } else if (snapshot.hasData) {
           Map _data = jsonDecode(snapshot.data.toString());
+          Map _exchangeRate = _data["market_data"]["current_price"];
           num _usdPrice = _data["market_data"]["current_price"]["usd"]; //getting price
           num _change24h = _data["market_data"]["price_change_percentage_24h"];
           String _image = _data["image"]["large"];
@@ -94,7 +103,7 @@ class _homePage extends State<HomePage>{
             children: [
               GestureDetector(child: _coinImageWidget(_image),
               onDoubleTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailsPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailsPage(rates: _exchangeRate,coin: _selectedCoin.toString())));
               },),
               _currentPriceWidget(_usdPrice),
               _percentageChangeWidget(_change24h),
@@ -133,8 +142,10 @@ class _homePage extends State<HomePage>{
   Widget _coinDescriptionWidget(String _descrip){
     return Container(
       width: _deviceWidth * 0.85,
-      height: _deviceHeight * 0.3,
-      child: SingleChildScrollView(child: Text(_descrip,style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400))),
+      height: _deviceHeight * 0.38,
+      child: SingleChildScrollView(
+        child: Text(_descrip.isNotEmpty? _descrip:"There is no Description",
+        style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400))),
     );
   }
 
