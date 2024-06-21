@@ -64,7 +64,7 @@ class _homePage extends State<HomePage>{
     return DropdownButton(
       value: _selectedCoin!.toUpperCase(),
       items: _item,           
-      dropdownColor: Colors.purple[700],                                                                            
+      dropdownColor: Color.fromARGB(255, 30, 150, 230),                                                                            
       onChanged: (dynamic _value) {
         setState(() {
           _selectedCoin = _coinMap[_value];
