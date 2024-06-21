@@ -27,7 +27,7 @@ class DetailsPage extends StatelessWidget{
       itemCount: _currencies.length,
       itemBuilder: (_context,_index){
         String _currency = _currencies[_index].toString().toUpperCase();
-        String _exchangeRate = _exchangeRates[_index].toString().toUpperCase();
+        String _exchangeRate = _exchangeRates[_index].toString();
         return ListTile(
           title: Text("$_currency -> $_exchangeRate",
           style:TextStyle(
