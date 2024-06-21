@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       title: 'Coin Cap App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 30, 150, 230)),
         useMaterial3: true,
       ),
       home: HomePage()
